@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="referrer" content="never">
+    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    {% block head %}{% endblock %}
+    <title>{% block title %}知乎-搜索用户{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="http://getbootstrap.com/docs/4.0/examples/starter-template/starter-template.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto" style="margin-left: 510px !important;">
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('main.index') }}">主页 <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://longofo.cc" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">友情链接</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" href="http://xiaorui.cc">小瑞大牛</a>
+              <a class="dropdown-item" href="https://cuiqingcai.com">爬虫大佬</a>
+              <a class="dropdown-item" href="http://longofo.cc">Longofo's博客-My</a>
+            </div>
+          </li>
+          <li class="nav-item active user-count">
+            <a class="nav-link" href="#">
+              <p></p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main" class="container">
+    	<div class="main-content">
+    		<form class="form-inline my-2 my-lg-0 search-form" style="align:center" action="{{ url_for('main.search') }}" method="get">
+          		<input class="form-control mr-sm-2" type="text" placeholder="搜索" aria-label="Search" name="q">
+          		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索用户</button>
+        	</form>
+        	<div class="main-search-content">
+    		{% block main_content %}{% endblock %}
+    		</div>
+    	</div>
+    	<div class="sidebar">
+    		<div style="color:#4AD2B8; border-bottom: 2px solid #4AD2B8; height: 50px; padding-top: 10px;">Top</div>
+    		<ul class="sidebar-list">
+    		</ul>
+    	</div>
+    </main><!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"><\/script>')</script>
+    <!-- <script>window.jQuery || document.write('<script src="{{ url_for('static',filename='js/jquery.js') }}"><\/script>')</script> -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.14.3/esm/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+
+    <script type=text/javascript>
+	  	$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	  	function GetState() {
+		  		$.getJSON($SCRIPT_ROOT + '/top', function(data) {
+		  		$(".sidebar-list").empty();
+		  		for (var key in data){
+		  			var user = data[key];
+		  			var element = '<li class="user-list">' +
+	    			'<a href="https://www.zhihu.com/people/' +  user['url_token'] + '" title="' + user['headline'] + '">' +
+	    				'<span class="user-thumbnail">' +
+	    					'<img src="' + user['avatar_url'] +'" alt="' + user['name'] +'">' +
+	    				'</span>' + 
+	    				'<span class="user-text">' +
+	    					user['headline'].slice(0,18) + '...' +
+	    				'</span>' +
+	    				'<span class="user-muted">' +
+	    					user['name'] +
+	    				'</span>' + 
+	    				'<span class="user-muted">' +
+	    					'关注-' + user['follower_count'] +
+	    				'</span>' +
+	    			'</a>' +
+	    			'</li>';
+		  			$(".sidebar-list").append(element);
+		  		};
+			});
+		};
+		GetState();
+		window.setInterval(GetState, 5000);
+	</script>
+
+  <script type="text/javascript">
+    function GetUserCount(){
+      $.getJSON($SCRIPT_ROOT + '/userCount', function(data){
+        $(".user-count p").text('采集总量:' + data);
+      });
+    };
+    GetUserCount();
+    window.setInterval(GetUserCount, 5000);
+  </script>
+
+    {% block script %}{% endblock %}
+  </body>
+</html>

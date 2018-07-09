@@ -1,0 +1,25 @@
+version: '2'
+services:
+  zhihu-mongo:
+    image: mongo:latest
+    container_name: zhihu-mongo
+    hostname: zhihu-mongo
+    expose:
+      - "27017"
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./data/mongo:/data/db
+
+  zhihu-flask:
+    depends_on:
+      - zhihu-mongo
+    container_name: zhihu-flask
+    hostname: zhihu-flask
+    build: .
+    stdin_open: true
+    tty: true
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./zhihuuser:/zhihu-flask
