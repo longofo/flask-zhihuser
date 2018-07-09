@@ -84,15 +84,15 @@
 		  		for (var key in data){
 		  			var user = data[key];
 		  			var element = '<li class="user-list">' +
-	    			'<a href="https://www.zhihu.com/people/' +  user['url_token'] + '" title="' + user['headline'] + '">' +
+	    			'<a href="https://www.zhihu.com/people/' +  user['url_token'].replace('/<.*?>/ig') + '" title="' + user['headline'].replace('/<.*?>/ig').slice(0,10) + '">' +
 	    				'<span class="user-thumbnail">' +
-	    					'<img src="' + user['avatar_url'] +'" alt="' + user['name'] +'">' +
+	    					'<img src="' + user['avatar_url'].replace('/<.*?>/ig') +'" alt="' + user['name'].replace('/<.*?>/ig') +'">' +
 	    				'</span>' + 
 	    				'<span class="user-text">' +
-	    					user['headline'].slice(0,18) + '...' +
+	    					user['headline'].slice(0,18).replace('/<.*?>/ig') + '...' +
 	    				'</span>' +
 	    				'<span class="user-muted">' +
-	    					user['name'] +
+	    					user['name'].replace('/<.*?>/ig') +
 	    				'</span>' + 
 	    				'<span class="user-muted">' +
 	    					'关注-' + user['follower_count'] +
@@ -108,6 +108,7 @@
 	</script>
 
   <script type="text/javascript">
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     function GetUserCount(){
       $.getJSON($SCRIPT_ROOT + '/userCount', function(data){
         $(".user-count p").text('采集总量:' + data);

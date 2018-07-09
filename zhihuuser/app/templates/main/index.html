@@ -6,15 +6,15 @@
 	<ul class="main-content-list">
 		{% for user in users[0:20] %}
 		<li class="user-list">
-	    	<a href="{{ 'https://www.zhihu.com/people/' + user['url_token'] }}" title="{{ user['headline'] }}">
+	    	<a href="{{ 'https://www.zhihu.com/people/' + user['url_token'] }}" title="{{ user['headline'][0:10] | safe }}">
 	    		<span class="user-thumbnail">
-	    			<img src="{{ user['avatar_url'] }}" alt="{{ user['name'] }}">
+	    			<img src="{{ user['avatar_url'] }}" alt="{{ user['name'] | safe }}">
 	    		</span>
 	    		<span class="user-text">
-	    			{{ user['headline'][0:18] + '...' }}
+	    			{{ user['headline'][0:18].replace("<a>",'') | safe + '...' }}
 	    		</span>
 	    		<span class="user-muted">
-	    			{{ user['name'] }}
+	    			{{ user['name'] | safe }}
 	    		</span>
 	    		<span class="user-muted">
 	    			关注-{{ user['follower_count'] }}
@@ -28,15 +28,15 @@
 	<ul class="main-content-list">
 		{% for user in users[20:40] %}
 		<li class="user-list">
-	    	<a href="{{ 'https://www.zhihu.com/people/' + user['url_token'] }}" title="{{ user['headline'] }}">
+	    	<a href="{{ 'https://www.zhihu.com/people/' + user['url_token'] }}" title="{{ user['headline'] | safe }}">
 	    		<span class="user-thumbnail">
-	    			<img src="{{ user['avatar_url'] }}" alt="{{ user['name'] }}">
+	    			<img src="{{ user['avatar_url'] }}" alt="{{ user['name'] | safe }}">
 	    		</span>
 	    		<span class="user-text">
-	    			{{ user['headline'][0:18] + '...' }}
+	    			{{ user['headline'][0:18] | safe + '...' }}
 	    		</span>
 	    		<span class="user-muted">
-	    			{{ user['name'] }}
+	    			{{ user['name'] | safe }}
 	    		</span>
 	    		<span class="user-muted">
 	    			关注-{{ user['follower_count'] }}
