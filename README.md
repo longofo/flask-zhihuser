@@ -1,6 +1,6 @@
 ## 说明
 
-网页数据是通过Scrapy-redis爬取,爬虫项目在[https://github.com/wushilongwu/scrapy-redis-zhihu](https://github.com/wushilongwu/scrapy-redis-zhihu)
+网页数据是通过Scrapy-redis爬取,爬虫项目在[https://github.com/longofo/scrapy-redis-zhihu](https://github.com/longofo/scrapy-redis-zhihu)
 
 
 ## demo
